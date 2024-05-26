@@ -11,7 +11,7 @@
 						$role = Auth::user()->roles;
 						$bankName = Auth::user()->bank_name;
 						$year = $date = date('Y', time());;
-						if($role == 'administrator'){
+						if($role == 'administrator' || $role == 'bank_manager'){
 					@endphp
 					<li><a href="{{ route('dashboardProjection.index', ['bank_name' => '', 'periode' => '']) }}">Proyeksi</a></li>
 					<li><a href="{{ route('dashboardRealization.index', ['bank_name' => '', 'periode' => '']) }}">Realisasi</a></li>
@@ -33,6 +33,11 @@
 				<ul aria-expanded="false">
 					<li><a href="{{ route('storeProjection.index')}}">Penyetoran</a></li>
 					<li><a href="{{ route ('withdrawalProjection.index')}}">Penarikan</a></li>
+					@php
+					if($role == 'administrator' || $bankName == 'Bank Indonesia'){
+					@endphp
+					<li><a href="#">Pemusnahan</a></li>
+					@php } @endphp
 				</ul>
 			</li>
 
@@ -42,16 +47,24 @@
 					<span class="nav-text">Realisasi</span>
 				</a>
 				<ul aria-expanded="false">
+					@php
+					if($role == 'administrator' || $bankName == 'Bank Indonesia'){
+					@endphp
+					<li><a href="{{ route ('withdrawalProjection.index')}}">Pemusnahan</a></li>
+					<li><a href="{{ route ('storeUtleRealization.index')}}">Penyetoran</a></li>
+					<li><a href="{{ route ('withdrawalRealization.index')}}">Penarikan</a></li>
+					@php }else{ @endphp
 					<li><a href="{{ route ('storeUleRealization.index')}}">Penyetoran ULE</a></li>
 					<li><a href="{{ route ('storeUtleRealization.index')}}">Penyetoran UTLE</a></li>
 					<li><a href="{{ route ('withdrawalRealization.index')}}">Penarikan</a></li>
+					@php } @endphp
 				</ul>
 			</li>
 
 			<!-- Tasks -->
 			@php
 			$role = Auth::user()->roles;
-			if ($role == 'administrator'){
+			if ($role == 'administrator' || $role == 'bank_manager'){
 			@endphp
 			<li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
 					<i class="las la-tasks"></i>
@@ -62,6 +75,17 @@
 					<li><a href="{{ route('approvalHistory.index') }}">Approval History</a></li>
 				</ul>
 			</li>
+				
+			@php
+			}
+			@endphp
+
+
+			<!-- Tasks -->
+			@php
+			$role = Auth::user()->roles;
+			if ($role == 'administrator'){
+			@endphp
 			<li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
 					<i class="las la-tools"></i>
 					<span class="nav-text">Settings</span>
@@ -70,10 +94,10 @@
 					<li><a href="{{ route('user.all')}}">Users</a></li>
 				</ul>
 			</li>
-		</ul>
 			@php
 			}
 			@endphp
+		</ul>
 
 		<div class="mt-5"></div>
 		<hr style="width: 70%; margin: 0 auto;">

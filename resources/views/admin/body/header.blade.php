@@ -1,5 +1,5 @@
 <div class="nav-header">
-    <a href="index.html" class="brand-logo">
+    <a href="{{ route('welcome') }}" class="brand-logo">
         <img src="{{asset('asset/img/logo-bi.png')}}" width="50%" height="50%">
         
         <div class="brand-title">

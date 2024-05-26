@@ -23,7 +23,7 @@
                                                 <th>Fullname</th>
                                                 <th>Role</th>
                                                 <th>Status</th>
-                                                <th width="70px">Action</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>

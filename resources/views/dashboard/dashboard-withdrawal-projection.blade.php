@@ -26,7 +26,7 @@
                             $year = $date = date('Y', time());
                         @endphp
                         <select name="bank_name" class="default-select form-control wide mb-3" style="display: none;" {{ $role != 'administrator' ? 'disabled' : '' }}>
-                            @if ($bankName == 'administrator')
+                            @if ($role == 'administrator' || $role == 'bank_manager')
                                 <option value="" {{ request()->input('bank_name') == '' ? 'selected' : '' }}>All</option>
                             @endif
                                         

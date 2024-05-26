@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'roles',
         'bank_name',
+        'bank_class',
         'updated_by'
     ];
 

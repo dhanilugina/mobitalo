@@ -50,8 +50,19 @@
 									<div class="form-group col-sm-9">
 										<select name="roles" id="roles" class="default-select form-control wide mb-3">
 										@foreach($roles as $roles)
-											<option value = '{{ $roles->role_name }}'>{{ $roles->role_name }}</option>
+											<option value = '{{ $roles->role_code }}'>{{ $roles->role_name }}</option>
 										@endforeach
+										</select>
+									</div>
+								</div>
+
+								<div class="mb-3 row">
+									<label class="col-sm-3 col-form-label">Kelas Bank</label>
+									<div class="form-group col-sm-9">
+										<select name="bank_class" id="bank_class" class="default-select form-control wide mb-3">
+											<option value = 'none'>None</option>
+											<option value = 'kastip'>Kastip</option>
+											<option value = 'kota'>Kota</option>
 										</select>
 									</div>
 								</div>

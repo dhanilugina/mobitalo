@@ -43,7 +43,7 @@ class UserController extends Controller
                 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             ]);
             
-            $defaultPassword = 'P@sswr0d!';
+            $defaultPassword = '12345678';
             $status = '1';
             $img = '';
             
@@ -53,6 +53,7 @@ class UserController extends Controller
                 'password' => Hash::make($defaultPassword),
                 'status' => $status,
                 'bank_name' => $request->bank_name,
+                'bank_class' => $request->bank_class,
                 'roles' => $request->roles,
                 'status' => $status,
                 'created_at' => now(),
