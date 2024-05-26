@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterBank;
 use App\Models\StoreRealization;
 use App\Models\WithdrawalRealization;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class DashboardRealisasiController extends Controller
     public function index(Request $request)
     {
 
+        $allBanks = MasterBank::all();
         // Get the bank name and period from the request, defaulting to empty string if not provided
         $bankName = $request->input('bank_name', '');
         $periode = $request->input('periode', '');
@@ -170,7 +172,7 @@ class DashboardRealisasiController extends Controller
             ->get();
         }
 
-        return view('dashboard.dashboard-withdrawal-projection', compact('proyeksiAll','proyeksiPenarikan'));
+        return view('dashboard.dashboard-withdrawal-projection', compact('allBanks','proyeksiAll','proyeksiPenarikan'));
     }
 
     /**

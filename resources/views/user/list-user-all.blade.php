@@ -23,7 +23,7 @@
                                                 <th>Fullname</th>
                                                 <th>Role</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
+                                                <th width="70px">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -34,7 +34,7 @@
                                                 <td>{{ $item -> created_at }}</td>
 												<td>{{ $item -> email }}</td>
 												<td>{{ $item -> name }}</td>
-												<td>Administrator</td>
+												<td>{{ $item -> roles }}</td>
 												<td><span class="badge light {{ $status == '1' ? 'badge-primary' : 'badge-warning' }}">{{ $status == '1' ? 'Active' : 'Deleted' }}</span>
 </td>
 												<td>

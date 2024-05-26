@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterBank;
 use App\Models\StoreProjection;
 use App\Models\WithdrawalProjection;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class DashboardProyeksiController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
+    {   
+        $allBanks = MasterBank::all();
 
         // Get the bank name and period from the request, defaulting to empty string if not provided
         $bankName = $request->input('bank_name', '');
@@ -169,7 +171,7 @@ class DashboardProyeksiController extends Controller
             ->get();
         }
         
-        return view('dashboard.dashboard-store-projection', compact('proyeksiAll','proyeksiPenarikan'));
+        return view('dashboard.dashboard-store-projection', compact('allBanks','proyeksiAll','proyeksiPenarikan'));
     
     }
 

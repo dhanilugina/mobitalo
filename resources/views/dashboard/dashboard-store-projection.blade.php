@@ -15,31 +15,40 @@
                     <h5 class="card-title">Filter</h5>
                 </div>
                 <div class="card-body">
-                    <form method="get" action="{{route('dashboardProjection.index')}}">
-                        
-                        @csrf
-                    <div class="row">
-                        <label class="col-sm-3 col-form-label">Pilih Bank</label>
-                        <div class="col-sm-3">
+                <form method="get" action="{{ route('dashboardProjection.index') }}">
+                @csrf
+                <div class="row">
+                    <label class="col-sm-3 col-form-label">Pilih Bank</label>
+                    <div class="col-sm-3">
                         @php
-						$role = Auth::user()->roles;
-						$bankName = Auth::user()->bank_name;
-						$year = $date = date('Y', time());;
+                            $role = Auth::user()->roles;
+                            $bankName = Auth::user()->bank_name;
+                            $year = $date = date('Y', time());
                         @endphp
-                            <select name="bank_name" class="default-select form-control wide mb-3" style="display: none;" {{ $role = 'administrator' ? 'disabled' : '' }}>
+                        <select name="bank_name" class="default-select form-control wide mb-3" style="display: none;" {{ $role != 'administrator' ? 'disabled' : '' }}>
+                            @if ($bankName == 'administrator')
                                 <option value="" {{ request()->input('bank_name') == '' ? 'selected' : '' }}>All</option>
-                                <option value="Bank Mandiri" {{ request()->input('bank_name') == 'Bank Mandiri' ? 'selected' : '' }}>Bank Mandiri</option>
-                            </select>
-                        </div>
-                        <label class="col-sm-3 col-form-label">Pilih Tahun</label>
-                        <div class="col-sm-3">
-                        <select name="periode" class="default-select form-control wide mb-3" style="display: none;">
-                                <option value = "" {{ request()->input('periode') == '' ? 'selected' : '' }} > All</option>
-                                <option value = "2023" {{ request()->input('periode') == '2023' ? 'selected' : '' }} > 2023</option>
-                                <option value = "2024" {{ request()->input('periode') == '2024' ? 'selected' : '' }} > 2024</option>
-                            </select>
-                        </div>
+                            @endif
+                                        
+                            @foreach($allBanks as $bank)
+                                <option value="{{ $bank->bank_name }}" {{ request()->input('bank_name') == $bank->bank_name ? 'selected' : '' }}>{{ $bank->bank_name }}</option>
+                            @endforeach
+                        </select>
+
+                        @if ($role != 'administrator')
+                            <input type="hidden" name="bank_name" id="bank_name" value="{{ $bankName }}">
+                        @endif
+
                     </div>
+        <label class="col-sm-3 col-form-label">Pilih Tahun</label>
+        <div class="col-sm-3">
+            <select name="periode" class="default-select form-control wide mb-3" style="display: none;">
+                <option value="" {{ request()->input('periode') == '' ? 'selected' : '' }}>All</option>
+                <option value="2023" {{ request()->input('periode') == '2023' ? 'selected' : '' }}>2023</option>
+                <option value="2024" {{ request()->input('periode') == '2024' ? 'selected' : '' }}>2024</option>
+            </select>
+        </div>
+    </div>
                     
 
                 </div>

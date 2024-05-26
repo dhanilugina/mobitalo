@@ -135,8 +135,8 @@
     ***********************************-->
     <!-- Required vendors -->
     <script src="{{asset('asset/template/vendor/global/global.min.js')}}"></script>
-	<!-- <script src="{{asset('asset/template/vendor/chart.js/Chart.bundle.min.js')}}"></script>
-	<script src="{{asset('asset/template/vendor/jquery-nice-select/js/jquery.nice-select.min.js')}}"></script>-->
+	<!-- <script src="{{asset('asset/template/vendor/chart.js/Chart.bundle.min.js')}}"></script>-->
+	<script src="{{asset('asset/template/vendor/jquery-nice-select/js/jquery.nice-select.min.js')}}"></script>
 	
 	<!-- Apex Chart 
 	<script src="{{asset('asset/template/vendor/vendor/apexchart/apexchart.js')}}"></script>
