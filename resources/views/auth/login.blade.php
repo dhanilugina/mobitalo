@@ -45,7 +45,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" class="form-control" value="Password" id="password" name="password" >
+                                            <input type="password" class="form-control" value="12345678" id="password" name="password" >
                                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                         </div>
                                         <div class="row d-flex justify-content-between mt-4 mb-2">
