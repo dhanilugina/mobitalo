@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class RealisasiPenyetoranUtleController extends Controller
+class RealisasiPenyetoranController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,17 +20,18 @@ class RealisasiPenyetoranUtleController extends Controller
         $bankClass = Auth::user()->bank_class;
 
         if($role == 'administrator'){
-        $proyeksiAll = StoreRealization::where('store_type', 'utle')
-        ->where('realization_type', 'store')
-        ->get();
+            $proyeksiAll = StoreRealization::where('realization_type', 'store')
+            ->where('status','1')
+            ->where('bank_name','Bank Indonesia')
+            ->get();
         }else{
-        $proyeksiAll = StoreRealization::where('store_type', 'utle')
-        ->where('realization_type', 'store')
-        ->where('bank_name', $bankName)
-        ->where('bank_class', $bankClass)
-        ->get();
+            $proyeksiAll = StoreRealization::where('realization_type', 'store')
+            ->where('status','1')
+            ->where('bank_name',$bankName)
+            ->get();
         }
-        return view('realization.penyetoran-utle.list-store-utle-realization', compact('proyeksiAll'));
+
+        return view('realization.penyetoran.list-store-only-realization', compact('proyeksiAll'));
     }
 
     /**
@@ -40,13 +41,10 @@ class RealisasiPenyetoranUtleController extends Controller
     {
         $periode = $request->input('periode', '');
         $bankName = Auth::user()->bank_name;
-        $bankClass = Auth::user()->bank_class;
-
 
         $proyeksi = StoreProjection::where('projection_type', 'store')
         ->where('periode', $periode)
         ->where('bank_name', $bankName)
-        ->where('bank_class', $bankClass)
         ->first(); // Assuming you expect only one record
 
         $sumRealisasi = StoreRealization::selectRaw(
@@ -68,7 +66,6 @@ class RealisasiPenyetoranUtleController extends Controller
             ->where(DB::raw("SUBSTRING(periode, 4, 7)"), '=', $periode)
             ->where('realization_type', 'store')
             ->where('bank_name', $bankName)
-            ->where('bank_class', $bankClass)
             ->groupBy('periode')
             ->first(); // Assuming you expect only one record
 
@@ -114,8 +111,8 @@ class RealisasiPenyetoranUtleController extends Controller
             $sisaUl50 =  0;
         }
 
-        return view('realization.penyetoran-utle.form-store-utle-realization-add', compact('sisaUk100000', 'sisaUk50000', 'sisaUk20000', 'sisaUk10000', 'sisaUk5000', 'sisaUk2000', 'sisaUk1000', 'sisaUl1000', 'sisaUl500', 'sisaUl200', 'sisaUl100', 'sisaUl50'));
         
+        return view('realization.penyetoran.form-store-only-realization-add', compact('sisaUk100000', 'sisaUk50000', 'sisaUk20000', 'sisaUk10000', 'sisaUk5000', 'sisaUk2000', 'sisaUk1000', 'sisaUl1000', 'sisaUl500', 'sisaUl200', 'sisaUl100', 'sisaUl50'));
     }
 
     /**
@@ -123,12 +120,11 @@ class RealisasiPenyetoranUtleController extends Controller
      */
     public function store(Request $request)
     {
-        
         $status = '1';
-        $storeType = 'utle';
+        $storeType = '';
         $realizationType = 'store';
         //$dateTransform = \DateTime::createFromFormat('d-m-Y', $request->periode)->format('Y-m-d');
-      
+        
         $storeUleRealization = StoreRealization::create([
             'periode' => $request->periode_penyetoran,
             'realization_type' => $realizationType,
@@ -150,14 +146,15 @@ class RealisasiPenyetoranUtleController extends Controller
             'created_by' => Auth::user()->id,
             'bank_name' => Auth::user()->bank_name,
             'bank_class' => Auth::user()->bank_class
+
         ]);
 
-
+        
         $notification = array(
             'message' => 'Proyeksi Penyetoran Created Successfully', 
             'alert-type' => 'success'
         );
-        return redirect()->route('storeUtleRealization.index')->with($notification);
+        return redirect()->route('storeealization.index')->with($notification);
     }
 
     /**
@@ -166,7 +163,7 @@ class RealisasiPenyetoranUtleController extends Controller
     public function show(string $id)
     {
         $proyeksiView = StoreRealization::findOrFail($id);
-        return view('realization.penyetoran-utle.form-store-utle-realization-view', compact('proyeksiView'));
+        return view('realization.penyetoran.form-store-only-realization-view', compact('proyeksiView'));
     }
 
     /**
@@ -199,6 +196,6 @@ class RealisasiPenyetoranUtleController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect()->route('storeUleRealization.index')->with($notification);
+        return redirect()->route('storeRealization.index')->with($notification);
     }
 }

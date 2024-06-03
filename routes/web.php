@@ -6,8 +6,10 @@ use App\Http\Controllers\DashboardProyeksiController;
 use App\Http\Controllers\DashboardRealisasiController;
 use App\Http\Controllers\MyRequestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProyeksiPemusnahanController;
 use App\Http\Controllers\ProyeksiPenarikanController;
 use App\Http\Controllers\ProyeksiPenyetoranController;
+use App\Http\Controllers\RealisasiPemusnahanController;
 use App\Http\Controllers\RealisasiPenarikanController;
 use App\Http\Controllers\RealisasiPenyetoranController;
 use App\Http\Controllers\RealisasiPenyetoranUleController;
@@ -74,7 +76,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/view/{id}', [ProyeksiPenarikanController::class, 'show'])->name('withdrawalProjection.view');
         Route::post('/update', [ProyeksiPenarikanController::class, 'update'])->name('withdrawalProjection.update');
         Route::get('/delete/{id}', [ProyeksiPenarikanController::class, 'destroy'])->name('withdrawalProjection.delete');
-        
+
+    });
+
+    Route::group(['prefix' => 'proyeksi-pemusnahan'], function () {
+        // withdrawal Projection
+        Route::get('/index', [ProyeksiPemusnahanController::class, 'index'])->name('destructionProjection.index');
+        Route::get('/add', [ProyeksiPemusnahanController::class, 'create'])->name('destructionProjection.add');
+        Route::post('/store', [ProyeksiPemusnahanController::class, 'store'])->name('destructionProjection.store');
+        Route::get('/edit/{id}', [ProyeksiPemusnahanController::class, 'edit'])->name('destructionProjection.edit');
+        Route::get('/view/{id}', [ProyeksiPemusnahanController::class, 'show'])->name('destructionProjection.view');
+        Route::post('/update', [ProyeksiPemusnahanController::class, 'update'])->name('destructionProjection.update');
+        Route::get('/delete/{id}', [ProyeksiPemusnahanController::class, 'destroy'])->name('destructionProjection.delete');
+
     });
 
     Route::group(['prefix' => 'realisasi-penarikan'], function () {
@@ -111,6 +125,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/view/{id}', [RealisasiPenyetoranUtleController::class, 'show'])->name('storeUtleRealization.view');
         //Route::post('/update', [ProyeksiPenyetoranController::class, 'update'])->name('storeProjection.update');
         Route::get('/delete/{id}', [RealisasiPenyetoranUtleController::class, 'destroy'])->name('storeUtleRealization.delete');
+        
+    });
+
+    Route::group(['prefix' => 'realisasi-penyetoran'], function () {
+        // withdrawal Projection
+        Route::get('/index', [RealisasiPenyetoranController::class, 'index'])->name('storeRealization.index');
+        Route::get('/add', [RealisasiPenyetoranController::class, 'create'])->name('storeRealization.add');
+        Route::post('/store', [RealisasiPenyetoranController::class, 'store'])->name('storeRealization.store');
+        //Route::get('/edit/{id}', [ProyeksiPenyetoranController::class, 'edit'])->name('storeProjection.edit');
+        Route::get('/view/{id}', [RealisasiPenyetoranController::class, 'show'])->name('storeRealization.view');
+        //Route::post('/update', [ProyeksiPenyetoranController::class, 'update'])->name('storeProjection.update');
+        Route::get('/delete/{id}', [RealisasiPenyetoranController::class, 'destroy'])->name('storeRealization.delete');
+        
+    });
+
+    Route::group(['prefix' => 'realisasi-pemusnahan'], function () {
+        // withdrawal Projection
+        Route::get('/index', [RealisasiPemusnahanController::class, 'index'])->name('destructionRealization.index');
+        Route::get('/add', [RealisasiPemusnahanController::class, 'create'])->name('destructionRealization.add');
+        Route::post('/store', [RealisasiPemusnahanController::class, 'store'])->name('destructionRealization.store');
+        //Route::get('/edit/{id}', [RealisasiPemusnahanController::class, 'edit'])->name('destructionRealization.edit');
+        Route::get('/view/{id}', [RealisasiPemusnahanController::class, 'show'])->name('destructionRealization.view');
+        //Route::post('/update', [RealisasiPemusnahanController::class, 'update'])->name('destructionRealization.update');
+        Route::get('/delete/{id}', [RealisasiPemusnahanController::class, 'destroy'])->name('destructionRealization.delete');
         
     });
 

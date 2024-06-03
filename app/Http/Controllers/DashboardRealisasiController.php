@@ -19,11 +19,12 @@ class DashboardRealisasiController extends Controller
         $allBanks = MasterBank::all();
         // Get the bank name and period from the request, defaulting to empty string if not provided
         $bankName = $request->input('bank_name', '');
+        $bankClass = $request->input('bank_class', '');
         $periode = $request->input('periode', '');
 
 
         // Build query conditions based on the presence of filter parameters
-        if ($bankName == '' && $periode == ''){
+        if ($bankName == '' && $periode == '' && $bankClass == ''){
             $proyeksiAll = StoreRealization::selectRaw(
                 'SUM(uk100000) as uk100000_sum, 
                 SUM(uk50000) as uk50000_sum, 
@@ -58,6 +59,24 @@ class DashboardRealisasiController extends Controller
                 ->where('realization_type', 'withdrawal')
                 ->groupBy(DB::raw("SUBSTRING(periode, 4, 7)"))
                 ->get();
+
+                $realisasiPemusnahan = StoreRealization::selectRaw('SUM(uk100000) as uk100000_sum, 
+                SUM(uk50000) as uk50000_sum, 
+                SUM(uk20000) as uk20000_sum, 
+                SUM(uk10000) as uk10000_sum, 
+                SUM(uk5000) as uk5000_sum, 
+                SUM(uk2000) as uk2000_sum, 
+                SUM(uk1000) as uk1000_sum, 
+                SUM(ul1000) as ul1000_sum, 
+                SUM(ul500) as ul500_sum, 
+                SUM(ul200) as ul200_sum, 
+                SUM(ul100) as ul100_sum, 
+                SUM(ul50) as ul50_sum,
+                SUBSTRING(periode, 4, 7) as periode_month')
+                ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
+                ->where('realization_type', 'destruction')
+                ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
+                ->get();
         }
         else if ($bankName == '') {
             $proyeksiAll = StoreRealization::selectRaw('SUM(uk100000) as uk100000_sum, 
@@ -74,6 +93,7 @@ class DashboardRealisasiController extends Controller
             SUM(ul50) as ul50_sum,
             SUBSTRING(periode, 4, 7) as periode_month')
             ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
+            ->where('bank_class', '=', $bankClass)
             ->where('realization_type', 'store')
             ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
             ->get();
@@ -92,7 +112,84 @@ class DashboardRealisasiController extends Controller
             SUM(ul50) as ul50_sum,
             SUBSTRING(periode, 4, 7) as periode_month')
             ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
+            ->where('bank_class', '=', $bankClass)
             ->where('realization_type', 'withdrawal')
+            ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
+            ->get();
+
+            $realisasiPemusnahan = StoreRealization::selectRaw('SUM(uk100000) as uk100000_sum, 
+            SUM(uk50000) as uk50000_sum, 
+            SUM(uk20000) as uk20000_sum, 
+            SUM(uk10000) as uk10000_sum, 
+            SUM(uk5000) as uk5000_sum, 
+            SUM(uk2000) as uk2000_sum, 
+            SUM(uk1000) as uk1000_sum, 
+            SUM(ul1000) as ul1000_sum, 
+            SUM(ul500) as ul500_sum, 
+            SUM(ul200) as ul200_sum, 
+            SUM(ul100) as ul100_sum, 
+            SUM(ul50) as ul50_sum,
+            SUBSTRING(periode, 4, 7) as periode_month')
+            ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
+            ->where('bank_class', '=', $bankClass)
+            ->where('realization_type', 'destruction')
+            ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
+            ->get();
+        }else if ($bankClass == '') {
+            $proyeksiAll = StoreRealization::selectRaw('SUM(uk100000) as uk100000_sum, 
+            SUM(uk50000) as uk50000_sum, 
+            SUM(uk20000) as uk20000_sum, 
+            SUM(uk10000) as uk10000_sum, 
+            SUM(uk5000) as uk5000_sum, 
+            SUM(uk2000) as uk2000_sum, 
+            SUM(uk1000) as uk1000_sum, 
+            SUM(ul1000) as ul1000_sum, 
+            SUM(ul500) as ul500_sum, 
+            SUM(ul200) as ul200_sum, 
+            SUM(ul100) as ul100_sum, 
+            SUM(ul50) as ul50_sum,
+            SUBSTRING(periode, 4, 7) as periode_month')
+            ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
+            ->where('bank_name', '=', $bankName)
+            ->where('realization_type', 'store')
+            ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
+            ->get();
+
+            $proyeksiPenarikan = StoreRealization::selectRaw('SUM(uk100000) as uk100000_sum, 
+            SUM(uk50000) as uk50000_sum, 
+            SUM(uk20000) as uk20000_sum, 
+            SUM(uk10000) as uk10000_sum, 
+            SUM(uk5000) as uk5000_sum, 
+            SUM(uk2000) as uk2000_sum, 
+            SUM(uk1000) as uk1000_sum, 
+            SUM(ul1000) as ul1000_sum, 
+            SUM(ul500) as ul500_sum, 
+            SUM(ul200) as ul200_sum, 
+            SUM(ul100) as ul100_sum, 
+            SUM(ul50) as ul50_sum,
+            SUBSTRING(periode, 4, 7) as periode_month')
+            ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
+            ->where('bank_name', '=', $bankName)
+            ->where('realization_type', 'withdrawal')
+            ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
+            ->get();
+
+            $realisasiPemusnahan = StoreRealization::selectRaw('SUM(uk100000) as uk100000_sum, 
+            SUM(uk50000) as uk50000_sum, 
+            SUM(uk20000) as uk20000_sum, 
+            SUM(uk10000) as uk10000_sum, 
+            SUM(uk5000) as uk5000_sum, 
+            SUM(uk2000) as uk2000_sum, 
+            SUM(uk1000) as uk1000_sum, 
+            SUM(ul1000) as ul1000_sum, 
+            SUM(ul500) as ul500_sum, 
+            SUM(ul200) as ul200_sum, 
+            SUM(ul100) as ul100_sum, 
+            SUM(ul50) as ul50_sum,
+            SUBSTRING(periode, 4, 7) as periode_month')
+            ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
+            ->where('bank_name', '=', $bankName)
+            ->where('realization_type', 'destruction')
             ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
             ->get();
         }else if ($periode == '') {
@@ -110,6 +207,7 @@ class DashboardRealisasiController extends Controller
             SUM(ul50) as ul50_sum,
             SUBSTRING(periode, 4, 7) as periode_month')
             ->where('bank_name', '=', $bankName)
+            ->where('bank_class', '=', $bankClass)
             ->where('realization_type', 'store')
             ->groupBy(DB::raw("SUBSTRING(periode, 4, 7)","bank_name"))
             ->get();
@@ -128,7 +226,27 @@ class DashboardRealisasiController extends Controller
             SUM(ul50) as ul50_sum,
             SUBSTRING(periode, 4, 7) as periode_month')
             ->where('bank_name', '=', $bankName)
+            ->where('bank_class', '=', $bankClass)
             ->where('realization_type', 'withdrawal')
+            ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
+            ->get();
+
+            $realisasiPemusnahan = StoreRealization::selectRaw('SUM(uk100000) as uk100000_sum, 
+            SUM(uk50000) as uk50000_sum, 
+            SUM(uk20000) as uk20000_sum, 
+            SUM(uk10000) as uk10000_sum, 
+            SUM(uk5000) as uk5000_sum, 
+            SUM(uk2000) as uk2000_sum, 
+            SUM(uk1000) as uk1000_sum, 
+            SUM(ul1000) as ul1000_sum, 
+            SUM(ul500) as ul500_sum, 
+            SUM(ul200) as ul200_sum, 
+            SUM(ul100) as ul100_sum,    
+            SUM(ul50) as ul50_sum,
+            SUBSTRING(periode, 4, 7) as periode_month')
+            ->where('bank_name', '=', $bankName)
+            ->where('bank_class', '=', $bankClass)
+            ->where('realization_type', 'destruction')
             ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
             ->get();
         }else{
@@ -146,6 +264,7 @@ class DashboardRealisasiController extends Controller
             SUM(ul50) as ul50_sum,
             SUBSTRING(periode, 4, 7) as periode_month')
             ->where('bank_name', '=', $bankName)
+            ->where('bank_class', '=', $bankClass)
             ->where('realization_type', 'store')
             ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
             ->groupBy(DB::raw("SUBSTRING(periode, 4, 7)"), 'bank_name')
@@ -166,13 +285,34 @@ class DashboardRealisasiController extends Controller
             SUM(ul50) as ul50_sum,
             SUBSTRING(periode, 4, 7) as periode_month')
             ->where('bank_name', '=', $bankName)
+            ->where('bank_class', '=', $bankClass)
             ->where('realization_type', 'withdrawal')
+            ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
+            ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
+            ->get();
+
+            $realisasiPemusnahan = StoreRealization::selectRaw('SUM(uk100000) as uk100000_sum, 
+            SUM(uk50000) as uk50000_sum, 
+            SUM(uk20000) as uk20000_sum, 
+            SUM(uk10000) as uk10000_sum, 
+            SUM(uk5000) as uk5000_sum, 
+            SUM(uk2000) as uk2000_sum, 
+            SUM(uk1000) as uk1000_sum, 
+            SUM(ul1000) as ul1000_sum, 
+            SUM(ul500) as ul500_sum, 
+            SUM(ul200) as ul200_sum, 
+            SUM(ul100) as ul100_sum, 
+            SUM(ul50) as ul50_sum,
+            SUBSTRING(periode, 4, 7) as periode_month')
+            ->where('bank_name', '=', $bankName)
+            ->where('bank_class', '=', $bankClass)
+            ->where('realization_type', 'destruction')
             ->where(DB::raw("SUBSTRING(periode, 7, 4)"), '=', $periode)
             ->groupBy('bank_name', DB::raw("SUBSTRING(periode, 4, 7)"))
             ->get();
         }
 
-        return view('dashboard.dashboard-withdrawal-projection', compact('allBanks','proyeksiAll','proyeksiPenarikan'));
+        return view('dashboard.dashboard-withdrawal-projection', compact('allBanks','proyeksiAll','proyeksiPenarikan','realisasiPemusnahan'));
     }
 
     /**

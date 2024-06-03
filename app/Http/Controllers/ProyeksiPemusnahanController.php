@@ -6,42 +6,37 @@ use App\Models\StoreProjection;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ProyeksiPenyetoranController extends Controller
+class ProyeksiPemusnahanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
         $role = Auth::user()->roles;
         $bankName = Auth::user()->bank_name;
-        $bankClass = Auth::user()->bank_class;
 
         if($role == 'administrator'){
-            $proyeksiAll = StoreProjection::where('projection_type', 'store')
+            $proyeksiAll = StoreProjection::where('projection_type', 'destruction')
             ->where('status','1')
             ->get();
-        }else{            
-            $proyeksiAll = StoreProjection::where('projection_type', 'store')
-            ->where('bank_name',$bankName)
-            ->where('bank_class',$bankClass)
+        }else{
+            $proyeksiAll = StoreProjection::where('projection_type', 'destruction')
             ->where('status','1')
+            ->where('bank_name',$bankName)
             ->get();
         }
-        return view('projection.list-store-projection', compact('proyeksiAll'));
+        return view('projection.destruction.list-destruction-projection', compact('proyeksiAll'));//
     }
-
-    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('projection.form-store-projection-add');
+        return view('projection.destruction.form-destruction-projection-add');
     }
 
     /**
@@ -54,8 +49,9 @@ class ProyeksiPenyetoranController extends Controller
         ]);
         
         $status = '1';
-        $projectionType = 'store';
-        $storeProjection = StoreProjection::create([
+        $projectionType = 'destruction';
+
+        $destructionProjection = StoreProjection::create([
             'periode' => $request->periode,
             'projection_type' => $projectionType,
             'uk100000' => $request->uk_100000 ? $request->uk_100000 : 0,
@@ -73,15 +69,15 @@ class ProyeksiPenyetoranController extends Controller
             'status' => $status,
             'created_at' => now(),
             'created_by' => Auth::user()->id,
-            'bank_name' => Auth::user()->bank_name,
-            'bank_class' => Auth::user()->bank_class
+            'bank_name' => Auth::user()->bank_name
         ]);
 
+
         $notification = array(
-            'message' => 'Proyeksi Penyetoran Created Successfully', 
+            'message' => 'Proyeksi Pemusnahan Created Successfully', 
             'alert-type' => 'success'
         );
-        return redirect()->route('storeProjection.index')->with($notification);
+        return redirect()->route('destructionProjection.index')->with($notification);
     }
 
     /**
@@ -90,7 +86,7 @@ class ProyeksiPenyetoranController extends Controller
     public function show(string $id)
     {
         $proyeksiView = StoreProjection::findOrFail($id);
-        return view('projection.form-store-projection-view', compact('proyeksiView'));
+        return view('projection.destruction.form-destruction-projection-view', compact('proyeksiView'));
     }
 
     /**
@@ -99,7 +95,7 @@ class ProyeksiPenyetoranController extends Controller
     public function edit(string $id)
     {
         $proyeksiEdit = StoreProjection::findOrFail($id);
-        return view('projection.form-store-projection-edit', compact('proyeksiEdit'));
+        return view('projection.destruction.form-destruction-projection-edit', compact('proyeksiEdit'));
     }
 
     /**
@@ -140,8 +136,8 @@ class ProyeksiPenyetoranController extends Controller
         $data->bank_name = Auth::user()->bank_name;
         $data->bank_class = Auth::user()->bank_class;
         $data->status = '0';
-        $data->type = 'store';
-        $data->adjustment_type = 'PP';
+        $data->type = 'destruction';
+        $data->adjustment_type = 'PD';
 
         if ($request->file('fileNota')) {
             $file = $request->file('fileNota');
@@ -156,11 +152,11 @@ class ProyeksiPenyetoranController extends Controller
         
 
         $notification = array(
-            'message' => 'Proyeksi Penyetoran Updated Successfully', 
+            'message' => 'Proyeksi Pemusnahan Updated Successfully', 
             'alert-type' => 'success'
         );
 
-        return redirect()->route('storeProjection.index')->with($notification);
+        return redirect()->route('destructionProjection.index')->with($notification);
     }
 
     /**
@@ -168,16 +164,15 @@ class ProyeksiPenyetoranController extends Controller
      */
     public function destroy(string $id)
     {
-
         $data = StoreProjection::findOrFail($id);
         $data->status = '0';
         $data->save();
         
         $notification = array(
-            'message' => 'Proyeksi Penyetoran Updated Successfully', 
+            'message' => 'Proyeksi Pemusnahan Deleted Successfully', 
             'alert-type' => 'success'
         );
 
-        return redirect()->route('storeProjection.index')->with($notification);
+        return redirect()->route('destructionProjection.index')->with($notification);
     }
 }

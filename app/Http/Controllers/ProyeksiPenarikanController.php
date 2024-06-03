@@ -18,6 +18,7 @@ class ProyeksiPenarikanController extends Controller
     {   
         $role = Auth::user()->roles;
         $bankName = Auth::user()->bank_name;
+        $bankClass = Auth::user()->bank_class;
 
         if($role == 'administrator'){
             $proyeksiAll = StoreProjection::where('projection_type', 'withdrawal')
@@ -27,6 +28,7 @@ class ProyeksiPenarikanController extends Controller
             $proyeksiAll = StoreProjection::where('projection_type', 'withdrawal')
             ->where('status','1')
             ->where('bank_name',$bankName)
+            ->where('bank_class',$bankClass)
             ->get();
         }
         return view('projection.list-withdrawal-projection', compact('proyeksiAll'));
@@ -70,8 +72,9 @@ class ProyeksiPenarikanController extends Controller
             'ul50' => $request->ul_50 ? $request->ul_50 : 0,
             'status' => $status,
             'created_at' => now(),
-            'created_by' => Auth::user()->name,
-            'bank_name' => Auth::user()->bank_name
+            'created_by' => Auth::user()->id,
+            'bank_name' => Auth::user()->bank_name,
+            'bank_class' => Auth::user()->bank_class
         ]);
 
 
@@ -134,8 +137,9 @@ class ProyeksiPenarikanController extends Controller
         $data->after_ul100 = str_replace(',', '', $request->ul_100);
         $data->after_ul50 = str_replace(',', '', $request->ul_50);
         $data->created_at = now();
-        $data->created_by = Auth::user()->name;
+        $data->created_by = Auth::user()->id;
         $data->bank_name = Auth::user()->bank_name;
+        $data->bank_class = Auth::user()->bank_class;
         $data->status = '0';
         $data->type = 'withdrawal';
         $data->adjustment_type = 'PW';

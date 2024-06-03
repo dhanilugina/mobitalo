@@ -188,10 +188,19 @@
 						<div class="row m-4">
 							<div class="row justify-content-start">
 								<div class="col-lg-12 text-start">
+								
 								<form method="POST" action="{{ route('myRequest.store') }}">
 									@csrf
-									<input type="text" value="{{ $myRequestShow -> id }}" name="idTasks">
-								
+								<input type="hidden" value="{{ $myRequestShow -> id }}" name="idTasks">
+								<div class="row m-4">
+								<label class="col-sm-3 col-form-label">Disetujui ?</label>
+									<div class="form-group col-sm-9">
+										<select name="statusApproval" id="statusApproval" class="default-select form-control wide mb-3">
+											<option value = '1'>Approve</option>
+											<option value = '2'>Reject</option>
+										</select>
+									</div>
+								</div>
 									<button type="submit" class="btn btn-outline-primary w-25">Submit</button>
 									<button type="reset" class="btn btn-outline-warning w-25">Reset</button>
 									</form>

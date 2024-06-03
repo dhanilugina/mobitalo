@@ -37,13 +37,15 @@
                                     <td>{{ $item -> created_by }}</td>
                                     <td>
                                     @php
-                                            if ($item -> adjustment_type == "PP") {
-                                                echo 'Proyeksi Penyetoran';
-                                            } elseif ($key + 1 == "PK") {
-                                                echo 'Proyeksi Penarikan';
-                                            } elseif ($key + 1 == "RP") {
-                                                echo 'Proyeksi Penarikan';
-                                            }
+                                        if ($item -> adjustment_type == "PP") {
+                                            echo 'Proyeksi Penyetoran';
+                                        } elseif ($item -> adjustment_type == "PK") {
+                                            echo 'Proyeksi Penarikan';
+                                        } elseif ($item -> adjustment_type == "RP") {
+                                            echo 'Proyeksi Penarikan';
+                                        } elseif ($item -> adjustment_type == "PD") {
+                                            echo 'Proyeksi Pemusnahan';
+                                        }
                                         @endphp    
                                     </td>
                                     <td>{{ $item -> period }}</td>

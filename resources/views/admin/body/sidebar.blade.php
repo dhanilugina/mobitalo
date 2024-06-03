@@ -10,16 +10,17 @@
 					@php
 						$role = Auth::user()->roles;
 						$bankName = Auth::user()->bank_name;
+						$bankClass = Auth::user()->bank_class;
 						$year = $date = date('Y', time());;
 						if($role == 'administrator' || $role == 'bank_manager'){
 					@endphp
-					<li><a href="{{ route('dashboardProjection.index', ['bank_name' => '', 'periode' => '']) }}">Proyeksi</a></li>
-					<li><a href="{{ route('dashboardRealization.index', ['bank_name' => '', 'periode' => '']) }}">Realisasi</a></li>
+					<li><a href="{{ route('dashboardProjection.index', ['bank_name' => '', 'bank_class' => '', 'periode' => '']) }}">Proyeksi</a></li>
+					<li><a href="{{ route('dashboardRealization.index', ['bank_name' => '', 'bank_class' => '', 'periode' => '']) }}">Realisasi</a></li>
 					@php
 						}else{
 					@endphp
-					<li><a href="{{ route('dashboardProjection.index', ['bank_name' => $bankName, 'periode' => $year]) }}">Proyeksi</a></li>
-					<li><a href="{{ route('dashboardRealization.index', ['bank_name' => $bankName, 'periode' => $year]) }}">Realisasi</a></li>
+					<li><a href="{{ route('dashboardProjection.index', ['bank_name' => $bankName, 'bank_class' => $bankClass, 'periode' => $year]) }}">Proyeksi</a></li>
+					<li><a href="{{ route('dashboardRealization.index', ['bank_name' => $bankName, 'bank_class' => $bankClass, 'periode' => $year]) }}">Realisasi</a></li>
 					
 					@php } @endphp
 				</ul>
@@ -36,7 +37,7 @@
 					@php
 					if($role == 'administrator' || $bankName == 'Bank Indonesia'){
 					@endphp
-					<li><a href="#">Pemusnahan</a></li>
+					<li><a href="{{ route('destructionProjection.index')}}">Pemusnahan</a></li>
 					@php } @endphp
 				</ul>
 			</li>
@@ -48,12 +49,22 @@
 				</a>
 				<ul aria-expanded="false">
 					@php
-					if($role == 'administrator' || $bankName == 'Bank Indonesia'){
+					if($role == 'administrator'){
 					@endphp
-					<li><a href="{{ route ('withdrawalProjection.index')}}">Pemusnahan</a></li>
-					<li><a href="{{ route ('storeUtleRealization.index')}}">Penyetoran</a></li>
+					<li><a href="{{ route ('storeUleRealization.index')}}">Penyetoran ULE</a></li>
+					<li><a href="{{ route ('storeUtleRealization.index')}}">Penyetoran UTLE</a></li>	
+					<li><a href="{{ route ('storeRealization.index')}}">Penyetoran BI</a></li>	
 					<li><a href="{{ route ('withdrawalRealization.index')}}">Penarikan</a></li>
-					@php }else{ @endphp
+					<li><a href="{{ route ('destructionRealization.index') }}">Pemusnahan</a></li>
+					@php
+					}else if($bankName == 'Bank Indonesia'){ 
+					@endphp
+					<li><a href="{{ route ('storeRealization.index')}}">Penyetoran</a></li>
+					<li><a href="{{ route ('withdrawalRealization.index')}}">Penarikan</a></li>
+					<li><a href="{{ route ('destructionRealization.index') }}">Pemusnahan</a></li>
+					@php			
+					}else{ 
+					@endphp
 					<li><a href="{{ route ('storeUleRealization.index')}}">Penyetoran ULE</a></li>
 					<li><a href="{{ route ('storeUtleRealization.index')}}">Penyetoran UTLE</a></li>
 					<li><a href="{{ route ('withdrawalRealization.index')}}">Penarikan</a></li>
@@ -76,6 +87,19 @@
 				</ul>
 			</li>
 				
+			@php
+			}else{
+			@endphp
+
+			<li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+					<i class="las la-tasks"></i>
+					<span class="nav-text">Tasks</span>
+				</a>
+				<ul aria-expanded="false">
+					<li><a href="{{ route('approvalHistory.index') }}">Approval History</a></li>
+				</ul>
+			</li>	
+
 			@php
 			}
 			@endphp

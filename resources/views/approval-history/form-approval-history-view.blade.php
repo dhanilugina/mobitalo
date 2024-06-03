@@ -182,23 +182,6 @@
 							</div>
 						</div>
 					</div>
-
-					<hr>
-					<div class="row">
-						<div class="row m-4">
-							<div class="row justify-content-start">
-								<div class="col-lg-12 text-start">
-								<form method="POST" action="{{ route('myRequest.store') }}">
-									@csrf
-									<input type="text" value="{{ $myRequestShow -> id }}" name="idTasks">
-								
-									<button type="submit" class="btn btn-outline-primary w-25">Submit</button>
-									<button type="reset" class="btn btn-outline-warning w-25">Reset</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>

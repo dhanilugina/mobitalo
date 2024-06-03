@@ -17,6 +17,7 @@ class RealisasiPenyetoranUleController extends Controller
     {
         $role = Auth::user()->roles;
         $bankName = Auth::user()->bank_name;
+        $bankClass = Auth::user()->bank_class;
 
         if($role == 'administrator'){
         $proyeksiAll = StoreRealization::where('store_type','ule')
@@ -26,6 +27,7 @@ class RealisasiPenyetoranUleController extends Controller
         $proyeksiAll = StoreRealization::where('store_type','ule')
                     ->where('realization_type', 'store')
                     ->where('bank_name', $bankName)
+                    ->where('bank_class', $bankClass)
                     ->get();
         }
 
@@ -38,11 +40,14 @@ class RealisasiPenyetoranUleController extends Controller
     public function create(Request $request)
     {
         $periode = $request->input('periode', '');
-        $bankName = 'Bank Mandiri';
+        $bankName = Auth::user()->bank_name;
+        $bankClass = Auth::user()->bank_class;
 
         $proyeksi = StoreProjection::where('projection_type', 'store')
         ->where('periode', $periode)
-            ->first(); // Assuming you expect only one record
+        ->where('bank_name', $bankName)
+        ->where('bank_class', $bankClass)
+        ->first(); // Assuming you expect only one record
 
         $sumRealisasi = StoreRealization::selectRaw(
             '
@@ -62,6 +67,8 @@ class RealisasiPenyetoranUleController extends Controller
         )
             ->where(DB::raw("SUBSTRING(periode, 4, 7)"), '=', $periode)
             ->where('realization_type', 'store')
+            ->where('bank_name', $bankName)
+            ->where('bank_class', $bankClass)
             ->groupBy('periode')
             ->first(); // Assuming you expect only one record
 
@@ -141,8 +148,10 @@ class RealisasiPenyetoranUleController extends Controller
             'store_type' => $storeType,
             'status' => $status,
             'created_at' => now(),
-            'created_by' => Auth::user()->name,
-            'bank_name' => Auth::user()->bank_name
+            'created_by' => Auth::user()->id,
+            'bank_name' => Auth::user()->bank_name,
+            'bank_class' => Auth::user()->bank_class
+
         ]);
 
         

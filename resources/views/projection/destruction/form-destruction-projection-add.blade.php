@@ -9,7 +9,7 @@
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item" aria-current="page">Home</li>
 				<li class="breadcrumb-item" aria-current="page">Proyeksi</li>
-				<li class="breadcrumb-item" aria-current="page">Penyetoran</li>
+				<li class="breadcrumb-item" aria-current="page">Pemusnahan</li>
 				<li class="breadcrumb-item active" aria-current="page">Add</li>
 			</ol>
 		</nav>
@@ -17,11 +17,11 @@
 		<div class="col-lg-12">
 			<div class="card">
 				<div class="card-header">
-					<h4 class="card-title">Proyeksi Penyetoran ke Bank Indonesia</h4>
+					<h4 class="card-title">Proyeksi Pemusnahan ke Bank Indonesia</h4>
 				</div>
 				<div class="card-body">
 					<div class="row">
-						<form class="needs-validation" novalidate method="POST" action="{{ route('storeProjection.store') }}" id="myForm">
+						<form class="needs-validation" novalidate method="POST" action="{{ route('destructionProjection.store') }}" id="myForm">
 							@csrf
 							<div class="mb-3 row">
 								<label class="col-lg-3 col-form-label" for="uk-100000">Periode Penyetoran
@@ -206,8 +206,6 @@
 										</div>
 									</div>
 								</div>
-
-								
 							</div>
 							<div class="row m-2">
 								<div class="row justify-content-start">

@@ -19,6 +19,7 @@ class RealisasiPenarikanController extends Controller
     {   
         $role = Auth::user()->roles;
         $bankName = Auth::user()->bank_name;
+        $bankClass = Auth::user()->bank_class;
 
         if($role == 'administrator'){
         $proyeksiAll = StoreRealization::where('realization_type', 'withdrawal')
@@ -28,6 +29,7 @@ class RealisasiPenarikanController extends Controller
             $proyeksiAll = StoreRealization::where('realization_type', 'withdrawal')
             ->where('status','1')
             ->where('bank_name',$bankName)
+            ->where('bank_class',$bankClass)
             ->get();
         }
         return view('realization.penarikan.list-withdrawal-realization', compact('proyeksiAll'));
@@ -39,11 +41,14 @@ class RealisasiPenarikanController extends Controller
     public function create(Request $request)
     {
         $periode = $request->input('periode', '');
-        $bankName = 'Bank Mandiri';
+        $bankName = Auth::user()->bank_name;
+        $bankClass = Auth::user()->bank_class;
 
         $proyeksi = StoreProjection::where('projection_type', 'withdrawal')
         ->where('periode', $periode)
-            ->first(); // Assuming you expect only one record
+        ->where('bank_name', $bankName)
+        ->where('bank_class', $bankClass)
+        ->first(); // Assuming you expect only one record
 
         $sumRealisasi = StoreRealization::selectRaw(
             '
@@ -63,6 +68,8 @@ class RealisasiPenarikanController extends Controller
         )
             ->where(DB::raw("SUBSTRING(periode, 4, 7)"), '=', $periode)
             ->where('realization_type', 'withdrawal')
+            ->where('bank_class', $bankClass)
+            ->where('bank_name', $bankName)
             ->groupBy('periode')
             ->first(); // Assuming you expect only one record
 
@@ -150,8 +157,9 @@ class RealisasiPenarikanController extends Controller
             'ul50' => $request->ul_50 ? $request->ul_50 : 0,
             'status' => $status,
             'created_at' => now(),
-            'created_by' => Auth::user()->name,
-            'bank_name' => Auth::user()->bank_name
+            'created_by' => Auth::user()->id,
+            'bank_name' => Auth::user()->bank_name,
+            'bank_class' => Auth::user()->bank_class
         ]);
 
         $notification = array(

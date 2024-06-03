@@ -15,7 +15,12 @@ class MyRequestController extends Controller
      */
     public function index()
     {
-        $myRequest = Tasks::all()->where('status','0');
+        $bankClass = Auth::user()->bank_class;
+        $bankName = Auth::user()->bank_name;
+        $myRequest = Tasks::all()
+        ->where('status','0')
+        ->where('bank_class',$bankClass)
+        ->where('bank_name',$bankName);
         return view('my-request.list-my-request', compact('myRequest'));
     }
 
@@ -33,6 +38,7 @@ class MyRequestController extends Controller
     public function store(Request $request)
     {
         $idTasks = $request->idTasks;
+        $status = $request->statusApproval;
         $aftereData = Tasks::findOrFail($idTasks);
         $periode = $aftereData->period;
         $projectionType = $aftereData->type;
@@ -59,9 +65,10 @@ class MyRequestController extends Controller
                 'updated_at' => now()
             ]);
 
+
         $taskUpdate = Tasks::where('id', $idTasks) 
         ->update([
-            'status' => '1',
+            'status' => $status,
             'updated_by' => Auth::user()->name,
             'updated_at' => now()
         ]);  
@@ -83,7 +90,6 @@ class MyRequestController extends Controller
 
         // Define the path to the PDF file
         $pathToFile = 'nota/' . $fileAttachment;
-
     
         // Check if the file exists
         if (Storage::disk('public')->exists($pathToFile)) {

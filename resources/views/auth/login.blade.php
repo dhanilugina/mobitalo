@@ -40,12 +40,12 @@
                                         @csrf   
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Email</strong></label>
-                                            <input type="email" class="form-control" value="hello@example.com" id="email" name="email" >
+                                            <input type="email" class="form-control" placeholder="hello@example.com" id="email" name="email" >
                                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" class="form-control" value="12345678" id="password" name="password" >
+                                            <input type="password" class="form-control" placeholder="12345678" id="password" name="password" >
                                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                         </div>
                                         <div class="row d-flex justify-content-between mt-4 mb-2">
@@ -57,14 +57,14 @@
                                             </div>
                                             <div class="mb-3">
                                             @if (Route::has('password.request'))
-                                                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                                                    {{ __('Forgot your password?') }}
+                                            Forgot your password?<a class="text-primary" href="{{ route('password.request') }}">
+                                                    {{ __('Click Here ') }} <i class="las la-long-arrow-alt-right"></i>
                                                 </a>
                                             @endif
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                            <button type="submit" class="btn btn-primary btn-block">Sign Me In <i class="las la-long-arrow-alt-right"></i></button>
                                         </div>
                                     </form>
                                 </div>
